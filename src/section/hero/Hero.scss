@@ -1,29 +1,14 @@
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+.sp-hero-section {
+  @apply bg-black text-white min-h-screen fixed;
+  background-image: url('/hero-cover.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  canvas {
+    @apply scale-150 absolute top-[90vh] inset-0 origin-center left-0;
+    width: 100% !important;
+    height: 200vh !important;
+    z-index: 1;
   }
 }
