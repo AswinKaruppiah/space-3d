@@ -15,5 +15,5 @@
 @import "./components.scss";
 
 body {
-    background-color: #000000;
+    @apply bg-black text-white;
 }

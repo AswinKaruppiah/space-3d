@@ -1,9 +1,19 @@
 .sp-hero-section {
-  @apply bg-black text-white min-h-screen min-w-full fixed;
-  background-image: url('/hero-cover.webp');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  @apply min-h-screen w-full fixed;
+  will-change: auto;
+
+  .sp-star-bg-img {
+    @apply absolute -inset-[25vw];
+    width: 150vw;
+    height: 200vh;
+    background-image: url("/hero-cover.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    will-change: transform;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
 
   h1 {
     @apply text-9xl text-left max-w-5xl font-RobotInvaders z-[2] relative mix-blend-difference;
@@ -16,6 +26,7 @@
   canvas {
     @apply scale-150;
     width: 100% !important;
-    height: 200vh !important;
+    min-height: 200vh !important;
+    background-color: transparent !important;
   }
 }
