@@ -3,7 +3,7 @@
   will-change: auto;
 
   .sp-star-bg-img {
-    @apply absolute -inset-[25vw];
+    @apply absolute -inset-[25vw] opacity-0;
     width: 150vw;
     height: 200vh;
     background-image: url("/hero-cover.webp");
@@ -16,17 +16,34 @@
   }
 
   h1 {
-    @apply text-9xl text-left max-w-5xl font-RobotInvaders z-[2] relative mix-blend-difference;
+    @apply text-9xl hidden text-left max-w-5xl font-RobotInvaders z-[2] relative mix-blend-difference;
   }
 
   h2 {
     @apply text-xl font-spaceMono font-medium;
   }
 
-  canvas {
-    @apply scale-150;
-    width: 100% !important;
-    min-height: 200vh !important;
-    background-color: transparent !important;
+  .sp-3d-earth {
+    @apply absolute pointer-events-none top-[90vh] inset-0 origin-center h-full min-w-full overflow-visible;
+
+    div {
+      overflow: visible !important;
+    }
+
+    canvas {
+      @apply scale-150;
+      width: 100% !important;
+      min-height: 200vh !important;
+      background-color: transparent !important;
+    }
   }
+}
+
+.cursor-mask {
+  @apply fixed w-[100px] h-[100px] opacity-0 rounded-full pointer-events-none mix-blend-difference;
+  background: radial-gradient(circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.9) 100%);
+  backdrop-filter: invert(1);
+  will-change: transform;
 }
