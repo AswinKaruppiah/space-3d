@@ -38,7 +38,7 @@ export default function Home() {
         y: clientY,
         xPercent: -50,
         yPercent: -50,
-        duration: 1.5,
+        duration: 1,
         ease: "power2.out",
       });
     };
@@ -47,7 +47,7 @@ export default function Home() {
       gsap.to(cursorRef.current, {
         width: 300,
         height: 300,
-        duration: 1,
+        duration: 0.5,
         ease: "power2.out"
       });
     };
@@ -56,7 +56,7 @@ export default function Home() {
       gsap.to(cursorRef.current, {
         width: 100,
         height: 100,
-        duration: 1,
+        duration: 0.5,
         ease: "power2.out"
       });
     };
