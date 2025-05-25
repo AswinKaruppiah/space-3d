@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Spline from "@splinetool/react-spline";
+import { useGLTF } from '@react-three/drei';
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 export default function Hero() {
   const earth = useRef(null);
@@ -11,6 +13,7 @@ export default function Hero() {
   const [isVisible, setIsVisible] = useState(true);
   const navRef = useRef(null);
   const [earthAnimationComplete, setEarthAnimationComplete] = useState(false);
+  const starShip = useRef(null);
 
   const earthAnimation = {
     duration: 2.5,
@@ -73,8 +76,6 @@ export default function Hero() {
     };
   }, [earthAnimationComplete]);
 
-
-
   useEffect(() => {
     if (isVisible) {
       gsap.fromTo(
@@ -132,6 +133,36 @@ export default function Hero() {
     );
   }, [])
 
+  //scroll effect
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to(headingRef.current, {
+      y: -150,
+      opacity: 0,
+      display: "none",
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "top top",
+        end: "100vh top",
+        scrub: 1,
+      },
+    });
+
+    gsap.to(earth.current, {
+      top: "120%",
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "top top",
+        end: "100vh top",
+        scrub: 1.5,
+      },
+    });
+  }, []);
+
+
   return (
     <div className="sp-hero-section">
       {/* Star Background */}
@@ -161,6 +192,43 @@ export default function Hero() {
           scene="https://prod.spline.design/8XljPx8CoGV2Vbpf/scene.splinecode"
         />
       </div>
+      {/* <div className="sp-rocket">
+        <div className="sp-rocket-container">
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 0.4 }}
+            gl={{ preserveDrawingBuffer: true }}
+          >
+            <OrbitControls enabled={false} />
+            <Stage shadows={false} intensity={2}> // Increased intensity to make the object brighter
+              <Model starShip={starShip} />
+            </Stage>
+            <Preload all />
+          </Canvas>
+        </div>
+      </div> */}
     </div>
   );
 }
+
+
+
+const Model = ({ starShip }) => {
+  const gltf = useGLTF("/star_wars_tieln_fighter/scene.gltf");
+
+  return (
+    <group ref={starShip}>
+      {/* <hemisphereLight intensity={0.5} /> */}
+      {/* <pointLight intensity={1} /> */}
+      {/* <meshPhysicalMaterial
+        reflectivity={0.9}
+        roughness={0.9}
+        color="#aaa"
+        metalness={1}
+        iridescence={0.3}
+        iridescenceIOR={1}
+        iridescenceThicknessRange={[100, 1000]}
+      /> */}
+      <primitive object={gltf.scene} />
+    </group>
+  );
+};

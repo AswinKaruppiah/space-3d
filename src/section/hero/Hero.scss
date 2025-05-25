@@ -37,10 +37,32 @@
       background-color: transparent !important;
     }
   }
+
+  .sp-rocket {
+    @apply fixed inset-0 z-10 h-full w-full overflow-visible pointer-events-none;
+    will-change: transform;
+
+
+    .sp-rocket-container {
+      @apply overflow-visible;
+      will-change: transform;
+
+      div {
+        height: 600px !important;
+
+        canvas {
+          height: 350px !important;
+          width: 1000px !important;
+        }
+      }
+
+
+    }
+  }
 }
 
 .cursor-mask {
-  @apply fixed w-[100px] h-[100px] opacity-0 rounded-full pointer-events-none mix-blend-difference;
+  @apply fixed w-[100px] h-[100px] rounded-full pointer-events-none mix-blend-difference;
   background: radial-gradient(circle at center,
       transparent 0%,
       rgba(0, 0, 0, 0.9) 100%);
