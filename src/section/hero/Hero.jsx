@@ -162,6 +162,57 @@ export default function Hero() {
     });
   }, []);
 
+  // const onLoad = (spline) => {
+  //   const rocketObject = spline.findObjectByName('rocket');
+
+  //   console.log(rocketObject);
+
+  //   rocketObject?.position?.set(800, 110, 0);
+  //   // rocketObject?.rotation?.set(2, 3.5, 0);
+  //   rocketObject?.scale?.set(0.3, 0.3, 0.3);
+
+  //   const tl = gsap.timeline({
+  //     scrollTrigger: {
+  //       trigger: ".sp-hero-section",
+  //       start: "100vh top",
+  //       end: "150vh top",
+  //       scrub: 1,
+  //     },
+  //   });
+
+  //   tl.to(rocketObject?.scale, {
+  //     x: 2,
+  //     y: 2,
+  //     z: 2,
+  //     duration: 2,
+  //     ease: "none"
+  //   });
+
+  //   tl.to(rocketObject?.position, {
+  //     x: -750,
+  //     y: -100,
+  //     duration: 2,
+  //     ease: "none",
+  //   }, "<");
+  // };
+
+  const onLoad = (spline) => {
+    const rocketObject = spline.findObjectByName('Sphere');
+
+    rocketObject?.position?.set(40, 10, 0);
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "100vh top",
+        end: "150vh top",
+        scrub: 1,
+      },
+    });
+
+  };
+
+
 
   return (
     <div className="sp-hero-section">
@@ -192,6 +243,18 @@ export default function Hero() {
           scene="https://prod.spline.design/8XljPx8CoGV2Vbpf/scene.splinecode"
         />
       </div>
+      <div className="sp-moon">
+        <Spline
+          scene="https://prod.spline.design/Q8CjR1fqdpMkaXSM/scene.splinecode"
+          onLoad={onLoad}
+        />
+      </div>
+      {/* <div className="sp-rocket">
+        <Spline
+          scene="https://prod.spline.design/nF6F8SbP8pltLT-E/scene.splinecode"
+          onLoad={onLoad}
+        />
+      </div> */}
       {/* <div className="sp-rocket">
         <div className="sp-rocket-container">
           <Canvas

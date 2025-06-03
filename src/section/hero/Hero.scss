@@ -38,27 +38,35 @@
     }
   }
 
-  .sp-rocket {
-    @apply fixed inset-0 z-10 h-full w-full overflow-visible pointer-events-none;
+  .sp-moon {
+    @apply fixed inset-0 h-full w-full overflow-visible pointer-events-none;
     will-change: transform;
 
 
-    .sp-rocket-container {
-      @apply overflow-visible;
-      will-change: transform;
-
-      div {
-        height: 600px !important;
-
-        canvas {
-          height: 350px !important;
-          width: 1000px !important;
-        }
-      }
-
-
-    }
   }
+
+  // .sp-rocket {
+  //   @apply fixed inset-0 z-10 h-full w-full overflow-visible pointer-events-none;
+  //   will-change: transform;
+
+
+
+  //   // .sp-rocket-container {
+  //   //   @apply overflow-visible;
+  //   //   will-change: transform;
+
+  //   //   div {
+  //   //     height: 600px !important;
+
+  //   //     canvas {
+  //   //       height: 350px !important;
+  //   //       width: 1000px !important;
+  //   //     }
+  //   //   }
+
+
+  //   // }
+  // }
 }
 
 .cursor-mask {
