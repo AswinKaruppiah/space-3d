@@ -14,6 +14,7 @@ export default function Hero() {
   const navRef = useRef(null);
   const [earthAnimationComplete, setEarthAnimationComplete] = useState(false);
   const starShip = useRef(null);
+  const moon = useRef(null);
 
   const earthAnimation = {
     duration: 2.5,
@@ -26,6 +27,19 @@ export default function Hero() {
   };
 
   useEffect(() => {
+    gsap.fromTo(
+      moon.current,
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+        duration: 2,
+        delay: 4,
+        ease: "power2.out",
+      }
+    );
+
     // Initial state setup
     gsap.set([navRef.current, starBg.current], { opacity: 0 });
 
@@ -57,10 +71,12 @@ export default function Hero() {
       const y = (clientY - innerHeight / 2) * 0.05;
 
       // Apply animations
-      earthXTo(x * -4);
-      earthAnimationComplete && earthYTo(y * -4);
+      earthAnimationComplete && earthXTo(x * -4);
+      earthYTo(y * -4);
       bgXTo(x * 5);
       bgYTo(y * 5);
+      moonXTo(x * -3);
+      moonYTo(y * -3);
     };
 
     // GSAP quick animations
@@ -68,6 +84,8 @@ export default function Hero() {
     const earthYTo = gsap.quickTo(earth.current, "y", earthAnimation);
     const bgXTo = gsap.quickTo(starBg.current, "x", starAnimation);
     const bgYTo = gsap.quickTo(starBg.current, "y", starAnimation);
+    const moonXTo = gsap.quickTo(moon.current, "x", earthAnimation);
+    const moonYTo = gsap.quickTo(moon.current, "y", earthAnimation);
 
     window.addEventListener("mousemove", handleMouseMove);
 
@@ -81,11 +99,11 @@ export default function Hero() {
       gsap.fromTo(
         earth.current,
         {
-          y: 200,
+          x: -100,
           opacity: 0,
         },
         {
-          y: 0,
+          x: 0,
           opacity: 1,
           duration: 2,
           delay: 2,
@@ -151,7 +169,7 @@ export default function Hero() {
     });
 
     gsap.to(earth.current, {
-      top: "120%",
+      left: "-40%",
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".sp-hero-section",
@@ -196,17 +214,30 @@ export default function Hero() {
   //   }, "<");
   // };
 
-  const onLoad = (spline) => {
-    const rocketObject = spline.findObjectByName('Sphere');
+  const onMoonLoad = (spline) => {
+    const moonObject = spline.findObjectByName('Sphere');
 
-    rocketObject?.position?.set(40, 10, 0);
+    if (!moonObject) {
+      console.warn('Sphere object not found');
+      return;
+    };
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".sp-hero-section",
-        start: "100vh top",
-        end: "150vh top",
-        scrub: 1,
+    // const tl = gsap.timeline({
+    //   scrollTrigger: {
+    //     trigger: ".sp-hero-section",
+    //     start: "100vh top",
+    //     end: "150vh top",
+    //     scrub: 1,
+    //   },
+    // });
+
+    gsap.to(moonObject?.rotation, {
+      y: '+=360',
+      duration: 3000,         // rotation duration in seconds
+      ease: 'none',        // constant speed
+      repeat: -1,          // infinite loop
+      modifiers: {
+        y: gsap.utils.unitize(value => parseFloat(value) % 360), // keep value from growing endlessly
       },
     });
 
@@ -220,7 +251,7 @@ export default function Hero() {
       <div className="sp-star-bg-img" ref={starBg} />
 
       {/* Header */}
-      <nav ref={navRef} className="w-full max-w-screen-2xl backdrop-blur-sm bg-transparent px-5 py-2">
+      <nav ref={navRef} className="w-full z-50 relative max-w-screen-2xl backdrop-blur-sm bg-transparent px-5 py-2">
         <h2>ASTO_</h2>
       </nav>
 
@@ -243,10 +274,10 @@ export default function Hero() {
           scene="https://prod.spline.design/8XljPx8CoGV2Vbpf/scene.splinecode"
         />
       </div>
-      <div className="sp-moon">
+      <div ref={moon} className="sp-moon">
         <Spline
           scene="https://prod.spline.design/Q8CjR1fqdpMkaXSM/scene.splinecode"
-          onLoad={onLoad}
+          onLoad={onMoonLoad}
         />
       </div>
       {/* <div className="sp-rocket">

@@ -16,7 +16,7 @@
   }
 
   h1 {
-    @apply text-9xl hidden text-left max-w-5xl font-RobotInvaders z-[2] relative mix-blend-difference;
+    @apply text-9xl hidden text-left max-w-5xl font-RobotInvaders z-[6] relative mix-blend-difference;
   }
 
   h2 {
@@ -24,7 +24,7 @@
   }
 
   .sp-3d-earth {
-    @apply absolute pointer-events-none top-[90vh] inset-0 origin-center h-full min-w-full overflow-visible;
+    @apply absolute pointer-events-none -top-[0%] -left-[25%] inset-0 h-full w-full overflow-visible;
 
     div {
       overflow: visible !important;
@@ -32,9 +32,9 @@
 
     canvas {
       @apply scale-150;
-      width: 100% !important;
-      min-height: 200vh !important;
-      background-color: transparent !important;
+      min-width: 50% !important;
+      height: 110vh !important;
+      // background-color: transparent !important;
     }
   }
 
