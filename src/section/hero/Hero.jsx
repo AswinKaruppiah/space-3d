@@ -168,13 +168,29 @@ export default function Hero() {
       },
     });
 
-    gsap.to(earth.current, {
-      left: "-40%",
+    gsap.to(
+      earth.current,
+      {
+        left: "-100%",
+        scale: 0.5,
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: ".sp-hero-section",
+          start: "90vh top",
+          end: "140vh top",
+          scrub: 1.5,
+        },
+      }
+    );
+
+    gsap.to(moon.current, {
+      left: "-90%",
+      scale: 1.5,
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".sp-hero-section",
-        start: "top top",
-        end: "100vh top",
+        start: "90vh top",
+        end: "130vh top",
         scrub: 1.5,
       },
     });
@@ -216,12 +232,16 @@ export default function Hero() {
 
   const onMoonLoad = (spline) => {
     const moonObject = spline.findObjectByName('Sphere');
+    const light = spline.findObjectByName('Directional Light'); // change name as needed
 
-    if (!moonObject) {
-      console.warn('Sphere object not found');
+    if (!moonObject || !light) {
+      console.warn('Missing objects');
       return;
-    };
+    }
 
+    // Change light position
+    // light.position.x = 200;
+    // light.position.y = 200;
     // const tl = gsap.timeline({
     //   scrollTrigger: {
     //     trigger: ".sp-hero-section",
@@ -233,14 +253,37 @@ export default function Hero() {
 
     gsap.to(moonObject?.rotation, {
       y: '+=360',
-      duration: 3000,         // rotation duration in seconds
-      ease: 'none',        // constant speed
-      repeat: -1,          // infinite loop
+      duration: 3000, // rotation duration in seconds
+      ease: 'none',// constant speed
+      repeat: -1, // infinite loop
       modifiers: {
         y: gsap.utils.unitize(value => parseFloat(value) % 360), // keep value from growing endlessly
       },
     });
 
+    gsap.to(light.position, {
+      x: 200,
+      y: 100,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "90vh top",
+        end: "120vh top",
+        scrub: 1.5,
+      },
+    });
+    gsap.to(moonObject.scale, {
+      x: 1.7, // width
+      y: 1.7, // height
+      z: 1.7, // optional depth
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "90vh top",
+        end: "120vh top",
+        scrub: 1.5,
+      },
+    });
   };
 
 
@@ -268,7 +311,7 @@ export default function Hero() {
       )} */}
 
       {/* 3D Earth Model */}
-      <div ref={earth} className="sp-3d-earth">
+      <div ref={earth} className="sp-3d-earth opacity-0">
         <Spline
           onLoad={() => setIsVisible(false)}
           scene="https://prod.spline.design/8XljPx8CoGV2Vbpf/scene.splinecode"
