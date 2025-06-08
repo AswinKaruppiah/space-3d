@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Spline from "@splinetool/react-spline";
-import { useGLTF } from '@react-three/drei';
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const earth = useRef(null);
@@ -15,6 +17,7 @@ export default function Hero() {
   const [earthAnimationComplete, setEarthAnimationComplete] = useState(false);
   const starShip = useRef(null);
   const moon = useRef(null);
+  const floatingAstro = useRef(null);
 
   const earthAnimation = {
     duration: 2.5,
@@ -84,8 +87,8 @@ export default function Hero() {
     const earthYTo = gsap.quickTo(earth.current, "y", earthAnimation);
     const bgXTo = gsap.quickTo(starBg.current, "x", starAnimation);
     const bgYTo = gsap.quickTo(starBg.current, "y", starAnimation);
-    const moonXTo = gsap.quickTo(moon.current, "x", earthAnimation);
-    const moonYTo = gsap.quickTo(moon.current, "y", earthAnimation);
+    const moonXTo = gsap.quickTo(moon?.current, "x", earthAnimation);
+    const moonYTo = gsap.quickTo(moon?.current, "y", earthAnimation);
 
     window.addEventListener("mousemove", handleMouseMove);
 
@@ -153,7 +156,6 @@ export default function Hero() {
 
   //scroll effect
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
 
     gsap.to(headingRef.current, {
       y: -150,
@@ -172,115 +174,100 @@ export default function Hero() {
       earth.current,
       {
         left: "-100%",
-        scale: 0.5,
+        scale: 0.2,
         ease: "power1.inOut",
         scrollTrigger: {
           trigger: ".sp-hero-section",
-          start: "90vh top",
-          end: "140vh top",
+          start: "100vh top",
+          end: "220vh top",
           scrub: 1.5,
         },
       }
     );
 
     gsap.to(moon.current, {
-      left: "-90%",
-      scale: 1.5,
+      left: "-40%",
+      scale: 1.2,
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".sp-hero-section",
-        start: "90vh top",
-        end: "130vh top",
+        start: "100vh top",
+        end: "200vh top",
         scrub: 1.5,
       },
     });
+
+    gsap.fromTo(floatingAstro.current,
+      {
+        top: "-35%",
+        opacity: 0,
+      },
+      {
+        top: "-30%",
+        opacity: 1,
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: ".sp-hero-section",
+          start: "195vh top",
+          end: "210vh top",
+          scrub: 1,
+        },
+      }
+    );
   }, []);
 
-  // const onLoad = (spline) => {
-  //   const rocketObject = spline.findObjectByName('rocket');
-
-  //   console.log(rocketObject);
-
-  //   rocketObject?.position?.set(800, 110, 0);
-  //   // rocketObject?.rotation?.set(2, 3.5, 0);
-  //   rocketObject?.scale?.set(0.3, 0.3, 0.3);
-
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: ".sp-hero-section",
-  //       start: "100vh top",
-  //       end: "150vh top",
-  //       scrub: 1,
-  //     },
-  //   });
-
-  //   tl.to(rocketObject?.scale, {
-  //     x: 2,
-  //     y: 2,
-  //     z: 2,
-  //     duration: 2,
-  //     ease: "none"
-  //   });
-
-  //   tl.to(rocketObject?.position, {
-  //     x: -750,
-  //     y: -100,
-  //     duration: 2,
-  //     ease: "none",
-  //   }, "<");
-  // };
 
   const onMoonLoad = (spline) => {
     const moonObject = spline.findObjectByName('Sphere');
-    const light = spline.findObjectByName('Directional Light'); // change name as needed
+    const light = spline.findObjectByName('Directional Light');
 
     if (!moonObject || !light) {
       console.warn('Missing objects');
       return;
     }
 
-    // Change light position
-    // light.position.x = 200;
-    // light.position.y = 200;
-    // const tl = gsap.timeline({
-    //   scrollTrigger: {
-    //     trigger: ".sp-hero-section",
-    //     start: "100vh top",
-    //     end: "150vh top",
-    //     scrub: 1,
-    //   },
-    // });
-
     gsap.to(moonObject?.rotation, {
       y: '+=360',
-      duration: 3000, // rotation duration in seconds
-      ease: 'none',// constant speed
-      repeat: -1, // infinite loop
+      duration: 3000,
+      ease: 'none',
+      repeat: -1,
       modifiers: {
-        y: gsap.utils.unitize(value => parseFloat(value) % 360), // keep value from growing endlessly
+        y: gsap.utils.unitize(value => parseFloat(value) % 360),
       },
     });
 
     gsap.to(light.position, {
       x: 200,
       y: 100,
+      duration: 3000,
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".sp-hero-section",
-        start: "90vh top",
-        end: "120vh top",
+        start: "100vh top",
+        end: "180vh top",
         scrub: 1.5,
       },
     });
     gsap.to(moonObject.scale, {
-      x: 1.7, // width
-      y: 1.7, // height
-      z: 1.7, // optional depth
+      x: 1.9, // width
+      y: 1.9, // height
+      z: 1.9, // optional depth
       ease: "power1.inOut",
       scrollTrigger: {
         trigger: ".sp-hero-section",
-        start: "90vh top",
-        end: "120vh top",
+        start: "100vh top",
+        end: "180vh top",
+        scrub: 1.5,
+      },
+    });
+    gsap.to(moonObject.position, {
+      x: -30,
+      y: -50,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "100vh top",
+        end: "180vh top",
         scrub: 1.5,
       },
     });
@@ -294,7 +281,7 @@ export default function Hero() {
       <div className="sp-star-bg-img" ref={starBg} />
 
       {/* Header */}
-      <nav ref={navRef} className="w-full z-50 relative max-w-screen-2xl backdrop-blur-sm bg-transparent px-5 py-2">
+      <nav ref={navRef} className="w-full z-50 relative backdrop-blur-sm bg-transparent px-5 py-2">
         <h2>ASTO_</h2>
       </nav>
 
@@ -303,12 +290,6 @@ export default function Hero() {
         <h1 ref={headingRef}>Unlock the Infinite Space</h1>
       </div>
 
-      {/* Loading State */}
-      {/* {isVisible && (
-        <div className="h-screen w-screen text-5xl z-[5] relative font-RobotInvaders text-center">
-          <h5>Loading Asset</h5>
-        </div>
-      )} */}
 
       {/* 3D Earth Model */}
       <div ref={earth} className="sp-3d-earth opacity-0">
@@ -323,49 +304,122 @@ export default function Hero() {
           onLoad={onMoonLoad}
         />
       </div>
-      {/* <div className="sp-rocket">
-        <Spline
-          scene="https://prod.spline.design/nF6F8SbP8pltLT-E/scene.splinecode"
-          onLoad={onLoad}
-        />
-      </div> */}
-      {/* <div className="sp-rocket">
-        <div className="sp-rocket-container">
-          <Canvas
-            camera={{ position: [0, 0, 5], fov: 0.4 }}
-            gl={{ preserveDrawingBuffer: true }}
-          >
-            <OrbitControls enabled={false} />
-            <Stage shadows={false} intensity={2}> // Increased intensity to make the object brighter
-              <Model starShip={starShip} />
-            </Stage>
-            <Preload all />
-          </Canvas>
+      <div ref={floatingAstro} className="sp-floating-astro">
+        <div className="sp-img-container">
+          <Image
+            src="/assets/astronaut.png"
+            alt="astro"
+            width={500}
+            height={500}
+            quality={100}
+          />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
 
 
 
-const Model = ({ starShip }) => {
-  const gltf = useGLTF("/star_wars_tieln_fighter/scene.gltf");
 
-  return (
-    <group ref={starShip}>
-      {/* <hemisphereLight intensity={0.5} /> */}
-      {/* <pointLight intensity={1} /> */}
-      {/* <meshPhysicalMaterial
-        reflectivity={0.9}
-        roughness={0.9}
-        color="#aaa"
-        metalness={1}
-        iridescence={0.3}
-        iridescenceIOR={1}
-        iridescenceThicknessRange={[100, 1000]}
-      /> */}
-      <primitive object={gltf.scene} />
-    </group>
-  );
-};
+// const tl = gsap.timeline({
+//   scrollTrigger: {
+//     trigger: ".sp-hero-section",
+//     start: "100vh top",
+//     end: "270vh top",
+//     scrub: 1.5,
+//   }
+// });
+
+// // First part from start to 200vh top
+// tl.to(moon.current, {
+//   left: "-90%",
+//   scale: 1.5,
+//   ease: "power1.inOut",
+// }, 0);
+
+// // Second part from 200vh top to 370vh top
+// tl.to(moon.current, {
+//   left: "-45%",
+//   top: "50%",
+//   ease: "power1.inOut",
+// }, 1); // starts after first animation finishes
+
+{/* Loading State */ }
+{/* {isVisible && (
+        <div className="h-screen w-screen text-5xl z-[5] relative font-RobotInvaders text-center">
+          <h5>Loading Asset</h5>
+        </div>
+      )} */}
+
+
+
+
+// gsap.to(moonObject.position, {
+//   x: -300,
+//   y: -70,
+//   ease: "power1.inOut",
+//   scrollTrigger: {
+//     trigger: ".sp-hero-section",
+//     start: "100vh top",
+//     end: "200vh top",
+//     scrub: 1.5,
+//   },
+// });
+// gsap.to(moonObject.position, {
+//   x: -200,
+//   y: 100,
+//   ease: "power1.inOut",
+//   scrollTrigger: {
+//     trigger: ".sp-hero-section",
+//     start: "210vh top",
+//     end: "280vh top",
+//     scrub: 1.5,
+//   },
+// });
+
+// Change light position
+// light.position.x = 200;
+// light.position.y = 200;
+// const tl = gsap.timeline({
+//   scrollTrigger: {
+//     trigger: ".sp-hero-section",
+//     start: "100vh top",
+//     end: "150vh top",
+//     scrub: 1,
+//   },
+// });
+
+// const onLoad = (spline) => {
+//   const rocketObject = spline.findObjectByName('rocket');
+
+//   console.log(rocketObject);
+
+//   rocketObject?.position?.set(800, 110, 0);
+//   // rocketObject?.rotation?.set(2, 3.5, 0);
+//   rocketObject?.scale?.set(0.3, 0.3, 0.3);
+
+//   const tl = gsap.timeline({
+//     scrollTrigger: {
+//       trigger: ".sp-hero-section",
+//       start: "100vh top",
+//       end: "150vh top",
+//       scrub: 1,
+//     },
+//   });
+
+//   tl.to(rocketObject?.scale, {
+//     x: 2,
+//     y: 2,
+//     z: 2,
+//     duration: 2,
+//     ease: "none"
+//   });
+
+//   tl.to(rocketObject?.position, {
+//     x: -750,
+//     y: -100,
+//     duration: 2,
+//     ease: "none",
+//   }, "<");
+// };

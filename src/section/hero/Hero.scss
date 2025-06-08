@@ -41,32 +41,29 @@
   .sp-moon {
     @apply fixed inset-0 h-full w-full overflow-visible pointer-events-none;
     will-change: transform;
-
-
   }
 
-  // .sp-rocket {
-  //   @apply fixed inset-0 z-10 h-full w-full overflow-visible pointer-events-none;
-  //   will-change: transform;
+  .sp-floating-astro {
+    @apply fixed inset-0 opacity-0;
 
+    @keyframes float {
 
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-  //   // .sp-rocket-container {
-  //   //   @apply overflow-visible;
-  //   //   will-change: transform;
+      50% {
+        transform: translateY(-15px);
+        /* adjust this value for more/less float */
+      }
+    }
 
-  //   //   div {
-  //   //     height: 600px !important;
-
-  //   //     canvas {
-  //   //       height: 350px !important;
-  //   //       width: 1000px !important;
-  //   //     }
-  //   //   }
-
-
-  //   // }
-  // }
+    .sp-img-container {
+      @apply absolute top-0 -right-14;
+      animation: float 4s ease-in-out infinite;
+    }
+  }
 }
 
 .cursor-mask {
