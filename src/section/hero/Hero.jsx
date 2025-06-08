@@ -185,17 +185,34 @@ export default function Hero() {
       }
     );
 
-    gsap.to(moon.current, {
-      left: "-40%",
-      scale: 1.2,
-      ease: "power1.inOut",
+
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".sp-hero-section",
         start: "100vh top",
-        end: "200vh top",
+        end: "500vh top",
         scrub: 1.5,
-      },
+      }
     });
+
+    // Total scroll distance = 400vh
+    // First 200vh = 50% (0 to 0.5 of timeline)
+    // Gap = next 100vh (0.5 to 0.75)
+    // Second animation = last 100vh (0.75 to 1)
+
+    tl.to(moon.current, {
+      left: "-40%",
+      scale: 1.5,
+      ease: "power1.inOut",
+    }, 0)
+
+      .to(moon.current, {
+        left: "5%",
+        top: "50%",
+        scale: 1,
+        ease: "power1.inOut",
+      }, 0.75); // starts at 75% of scroll (400vh)
+
 
     gsap.fromTo(floatingAstro.current,
       {
@@ -214,6 +231,9 @@ export default function Hero() {
         },
       }
     );
+
+
+
   }, []);
 
 
