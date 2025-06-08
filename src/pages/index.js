@@ -85,10 +85,13 @@ export default function Home() {
       <div className="relative h-full w-full">
         <div
           ref={cursorRef}
-          className="cursor-mask "
+          className="cursor-mask"
         />
         <Hero />
-        <div className="h-[1000vh]"></div>
+        <div className="h-[1000vh]">
+          <div className="h-[100vh]" />
+          <h1 className="text-white text-6xl font-RobotInvaders">Aswin</h1>
+        </div>
       </div>
     </>
   );

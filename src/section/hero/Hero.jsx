@@ -60,7 +60,7 @@ export default function Hero() {
         opacity: 1,
         duration: 1.5,
         ease: "power2.out"
-      })
+      });
   }, []);
 
   useEffect(() => {
@@ -174,6 +174,7 @@ export default function Hero() {
       earth.current,
       {
         left: "-100%",
+        display: "none",
         scale: 0.2,
         ease: "power1.inOut",
         scrollTrigger: {
@@ -185,8 +186,38 @@ export default function Hero() {
       }
     );
 
+    const astrotl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "195vh top",
+        end: "700vh top",
+        scrub: 1,
+      },
+    });
 
-    const tl = gsap.timeline({
+    // First animation (195vh to 210vh)
+    astrotl.fromTo(floatingAstro.current,
+      {
+        top: "-40%",
+        opacity: 0,
+      },
+      {
+        top: "-30%",
+        opacity: 1,
+        ease: "power1.inOut",
+      }, 0);
+
+    // Second animation (600vh to 700vh)
+    astrotl.to(floatingAstro.current, {
+      top: "50%",
+      ease: "power1.inOut",
+    }, 0.9);
+
+    // Total scroll distance = 400vh
+    // First 200vh = 50% (0 to 0.5 of timeline)
+    // Gap = next 100vh (0.5 to 0.75)
+    // Second animation = last 100vh (0.75 to 1)
+    const moontl = gsap.timeline({
       scrollTrigger: {
         trigger: ".sp-hero-section",
         start: "100vh top",
@@ -195,44 +226,53 @@ export default function Hero() {
       }
     });
 
-    // Total scroll distance = 400vh
-    // First 200vh = 50% (0 to 0.5 of timeline)
-    // Gap = next 100vh (0.5 to 0.75)
-    // Second animation = last 100vh (0.75 to 1)
-
-    tl.to(moon.current, {
+    moontl.to(moon.current, {
       left: "-40%",
       scale: 1.5,
       ease: "power1.inOut",
-    }, 0)
+    }, 0).to(moon.current, {
+      left: "6%",
+      top: "50%",
+      scale: 1.2,
+      ease: "power1.inOut",
+    }, 0.75);
 
-      .to(moon.current, {
-        left: "5%",
-        top: "50%",
-        scale: 1,
-        ease: "power1.inOut",
-      }, 0.75); // starts at 75% of scroll (400vh)
-
-
-    gsap.fromTo(floatingAstro.current,
-      {
-        top: "-35%",
-        opacity: 0,
+    gsap.to(".sp-portal", {
+      y: 5,
+      opacity: 1,
+      zIndex: 1000,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "450vh top",
+        end: "500vh top",
+        scrub: 1,
       },
-      {
-        top: "-30%",
-        opacity: 1,
-        ease: "power1.inOut",
-        scrollTrigger: {
-          trigger: ".sp-hero-section",
-          start: "195vh top",
-          end: "210vh top",
-          scrub: 1,
-        },
-      }
-    );
+    })
 
+    gsap.to(".sp-portal", {
+      transformOrigin: "center 6.8%",
+      scale: 73,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "550vh top",
+        end: "700vh top",
+        scrub: 1,
+      },
+    });
 
+    gsap.to(".sp-hero-section", {
+      opacity: 0,
+      display: "none",
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "600vh top",
+        end: "630vh top",
+        scrub: true,
+      },
+    });
 
   }, []);
 
@@ -268,6 +308,7 @@ export default function Hero() {
         scrub: 1.5,
       },
     });
+
     gsap.to(moonObject.scale, {
       x: 1.9, // width
       y: 1.9, // height
@@ -280,6 +321,7 @@ export default function Hero() {
         scrub: 1.5,
       },
     });
+
     gsap.to(moonObject.position, {
       x: -30,
       y: -50,
@@ -291,9 +333,44 @@ export default function Hero() {
         scrub: 1.5,
       },
     });
+
+    gsap.to(light.position, {
+      y: 1000,
+      duration: 3000,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: ".sp-hero-section",
+        start: "400vh top",
+        end: "500vh top",
+        scrub: 1.5,
+      },
+    });
+
+    // 🌕 Hover Zoom Effect
+    spline.addEventListener('mouseDown', (e) => {
+      if (e.target.name === 'Sphere') {
+        gsap.to(moonObject.scale, {
+          x: 2.3,
+          y: 2.3,
+          z: 2.3,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    });
+
+    spline.addEventListener('mouseUp', (e) => {
+      if (e.target.name === 'Sphere') {
+        gsap.to(moonObject.scale, {
+          x: 1.9,
+          y: 1.9,
+          z: 1.9,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    });
   };
-
-
 
   return (
     <div className="sp-hero-section">
@@ -324,6 +401,7 @@ export default function Hero() {
           onLoad={onMoonLoad}
         />
       </div>
+
       <div ref={floatingAstro} className="sp-floating-astro">
         <div className="sp-img-container">
           <Image
@@ -331,6 +409,18 @@ export default function Hero() {
             alt="astro"
             width={500}
             height={500}
+            quality={100}
+          />
+        </div>
+      </div>
+
+      <div className="sp-portal">
+        <div className="sp-portal-container">
+          <Image
+            src="/hero-cover.webp"
+            alt="astro"
+            width={90}
+            height={50}
             quality={100}
           />
         </div>
